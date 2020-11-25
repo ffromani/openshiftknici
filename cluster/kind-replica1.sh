@@ -31,7 +31,6 @@ nodes:
 - role: worker
 EOF
 	kind create cluster \
-		-q \
 		--kubeconfig ${CONTEXT}/kubeconfig \
 		--config ${CONTEXT}/kindconfig.yaml \
 		--image ${OPENSHIFTKNI_CI_KIND_IMAGE} \
@@ -41,7 +40,6 @@ EOF
 
 stop() {
 	kind delete cluster \
-		-q \
 		--name ${CLUSTER_NAME} || exit 2
 }
 

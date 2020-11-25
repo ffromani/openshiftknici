@@ -9,16 +9,21 @@ if [ -z "${KUBECONFIG}" ]; then
 	exit 1
 fi
 
+k8sdo() {
+	echo "kubectl $*"
+	kubectl $* || exit 2
+}
+
 start() {
-	kubectl create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml || exit 2
-	kubectl create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml || exit 2
-	kubectl create -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml || exit 2
+	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
+	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
+	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
 }
 
 stop() {
-	kubectl delete -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml || exit 2
-	kubectl delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml || exit 2
-	kubectl delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml || exit 2
+	k8sdo delete -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
+	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
+	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 }
 
 help() {
