@@ -35,6 +35,7 @@ EOF
 		--config ${CONTEXT}/kindconfig.yaml \
 		--image ${OPENSHIFTKNI_CI_KIND_IMAGE} \
 		--name ${CLUSTER_NAME} || exit 2
+	kubectl label node kind-worker node-role.kubernetes.io/worker=''
 	echo "${CONTEXT}/kubeconfig"
 }
 
