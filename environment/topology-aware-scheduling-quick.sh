@@ -18,6 +18,7 @@ start() {
 	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
 	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
+	# TODO wait for the daemonset to go running
 }
 
 stop() {
