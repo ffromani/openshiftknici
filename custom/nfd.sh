@@ -1,16 +1,19 @@
 #!/bin/bash
 
+CLUSTER_NAME=${1}
+KUBECONF=${2}
+
 # kind does NOT support podman yet, so we hardcode docker
 export IMAGE_BUILD_CMD="docker build"
 
-make image
+IMAGE_EXTRA_TAG_NAMES=nfd-e2e make image
 
-export NFD_IMAGE=$( docker images --format "{{.ID}}" | head -n1 )
-export IMAGE_REPO=$( echo "${NFD_IMAGE}" | cut -d: -f1 )
-export IMAGE_TAG_NAME=$( echo "${NFD_IMAGE}" | cut -d: -f1 )
+export IMAGE_REPO=$( docker images | awk '/nfd-e2e/ { print $1 }' )
+export IMAGE_TAG_NAME="nfd-e2e"
+export NFD_IMAGE="${IMAGE_REPO}:${IMAGE_TAG_NAME}"
 
 echo "built image: ${NFD_IMAGE} repo: ${IMAGE_REPO} tag: ${IMAGE_TAG_NAME}"
 
-kind load docker-image "${NFD_IMAGE}"
+kind load docker-image --name ${CLUSTER_NAME} ${NFD_IMAGE}
 
-make e2e-test
+KUBECONFIG=${KUBECONF} make e2e-test
