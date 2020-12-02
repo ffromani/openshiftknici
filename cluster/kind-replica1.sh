@@ -55,6 +55,9 @@ case $ACTION in
 	stop)
 		stop
 		;;
+	pass)
+		# do nothing, successfully
+		exit 0
 	*)
 		help
 		exit 0
