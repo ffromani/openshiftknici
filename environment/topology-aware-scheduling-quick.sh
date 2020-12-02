@@ -22,7 +22,7 @@ start() {
 }
 
 stop() {
-	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/manifests/noderesourcetopologies.yaml.template
+	k8sdo delete -f ${TOPOLOGYAPI_MANIFESTS}/manifests/noderesourcetopologies.yaml.template
 	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
 	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 }
