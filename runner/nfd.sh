@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -u
-
 BASEDIR=$( dirname $(readlink -f ${BASH_SOURCE[0]} ) )
 STOPACTION="stop"
 RET=127

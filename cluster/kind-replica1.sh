@@ -58,6 +58,7 @@ case $ACTION in
 	pass)
 		# do nothing, successfully
 		exit 0
+		;;
 	*)
 		help
 		exit 0
