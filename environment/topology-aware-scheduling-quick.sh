@@ -17,12 +17,12 @@ k8sdo() {
 start() {
 	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
-	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
+	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/manifests/noderesourcetopologies.yaml.template
 	# TODO wait for the daemonset to go running
 }
 
 stop() {
-	k8sdo delete -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
+	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/manifests/noderesourcetopologies.yaml.template
 	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
 	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 }
