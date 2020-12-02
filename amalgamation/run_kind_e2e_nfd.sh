@@ -9,6 +9,28 @@ TOPOLOGYAPI_MANIFESTS="https://raw.githubusercontent.com/swatisehgal/node-featur
 CLUSTER_NAME=${1:-kni-test}
 
 which kind &> /dev/null || exit 1
+which jq &> /dev/null || exit 1
+
+is_node_ready() {
+	local node=${1}
+	local ret=$( kubectl get nodes ${node} -o json |jq -r '.status.conditions[] // [] | select(.type=="Ready") | .status' )
+	if [ "$ret" == "True" ]; then
+		return 0
+	fi
+	return 1
+}
+
+wait_node_ready() {
+	local node=${1}
+	local max_tries=${2}
+
+	for num in $( seq 1 ${max_tries} ); do
+		echo "waiting for node ${node} to be ready: ${num}/${max_tries}"
+		is_node_ready ${node} || return 0
+		sleep 1s
+	done
+	return 1
+}
 
 CONTEXT=$( mktemp -d $(pwd)/knici-${CLUSTER_NAME}-XXXXXXXXXX )
 kind version > ${CONTEXT}/kindversion
@@ -42,9 +64,11 @@ kind create cluster \
 	--name ${CLUSTER_NAME} || exit 2
 trap cleanup SIGINT SIGTERM ERR EXIT
 
-kubectl label node kind-worker node-role.kubernetes.io/worker=''
-
 export KUBECONFIG="${CONTEXT}/kubeconfig"
+
+wait_node_ready ${CLUSTER_NAME}-worker 30
+
+kubectl label node ${CLUSTER_NAME}-worker node-role.kubernetes.io/worker=''
 
 kubectl create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 kubectl create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
