@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OPENSHIFTKNI_CI_KIND_IMAGE=${OPENSHIFTKNI_CI_KIND_IMAGE:-'kindest/node:v1.19.1@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600'}
+KIND_IMAGE=${kind_image:-'kindest/node:v1.19.1@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600'}
 
 ACTION=${1}
 CLUSTER_NAME=${2:-kni-test}
@@ -33,7 +33,7 @@ EOF
 	kind create cluster \
 		--kubeconfig ${CONTEXT}/kubeconfig \
 		--config ${CONTEXT}/kindconfig.yaml \
-		--image ${OPENSHIFTKNI_CI_KIND_IMAGE} \
+		--image ${KIND_IMAGE} \
 		--name ${CLUSTER_NAME} || exit 2
 	kubectl label node ${CLUSTER_NAME}-worker node-role.kubernetes.io/worker=''
 	echo "${CONTEXT}/kubeconfig"
