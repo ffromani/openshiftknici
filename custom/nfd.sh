@@ -1,11 +1,14 @@
 #!/bin/bash
 
-CLUSTER_NAME=${1}
+CLUSTER_NAME=${1:-nfd-e2e}
 KUBECONF=${2}
 
 # kind does NOT support podman yet, so we hardcode docker
 export IMAGE_BUILD_CMD="docker build"
 
+# TODO: the extra tag name should be related to the CLUSTER_NAME,
+# but the logic here works also with a hardcoded value, which we use
+# to avoid quoting headaches.
 IMAGE_EXTRA_TAG_NAMES=nfd-e2e make image
 
 export IMAGE_REPO=$( docker images | awk '/nfd-e2e/ { print $1 }' )
