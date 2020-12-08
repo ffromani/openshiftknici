@@ -30,18 +30,13 @@ kubeadmConfigPatches:
   reservedSystemCPUs: "1"
 nodes:
 EOF
-counter=1
-while [ $counter -le $MASTER_NUM ]
-do
- echo "- role: control-plane" >> ${CONTEXT}/kindconfig.yaml
-((counter++))
+
+for idx in $( seq 1 $MASTER_NUM ); do
+echo "- role: control-plane" >> ${CONTEXT}/kindconfig.yaml
 done
 
-counter=1
-while [ $counter -le $WORKER_NUM	 ]
-do
- echo "- role: worker" >> ${CONTEXT}/kindconfig.yaml
- ((counter++))
+for idx in $( seq 1 $WORKER_NUM ); do
+echo "- role: worker" >> ${CONTEXT}/kindconfig.yaml
 done
 
 	kind create cluster \
