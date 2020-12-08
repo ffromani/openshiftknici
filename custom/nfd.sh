@@ -11,7 +11,7 @@ export IMAGE_BUILD_CMD="docker build"
 # to avoid quoting headaches.
 IMAGE_EXTRA_TAG_NAMES=nfd-e2e make image
 
-export IMAGE_REPO=$( docker images | awk '/nfd-e2e/ { print $1 }' )
+export IMAGE_REPO=$( docker images | awk '/nfd-e2e/ { print $1 }' | awk 'NR==1')
 export IMAGE_TAG_NAME="nfd-e2e"
 export NFD_IMAGE="${IMAGE_REPO}:${IMAGE_TAG_NAME}"
 
