@@ -4,6 +4,8 @@ OPENSHIFTKNI_CI_KIND_IMAGE=${OPENSHIFTKNI_CI_KIND_IMAGE:-'kindest/node:v1.19.1@s
 
 ACTION=${1}
 CLUSTER_NAME=${2:-kni-test}
+MASTER_NUM=${3:-1}
+WORKER_NUM=${4:-1}
 
 which kind &> /dev/null || exit 1
 
@@ -27,9 +29,21 @@ kubeadmConfigPatches:
   topologyManagerPolicy: "single-numa-node"
   reservedSystemCPUs: "1"
 nodes:
-- role: control-plane
-- role: worker
 EOF
+counter=1
+while [ $counter -le $MASTER_NUM ]
+do
+ echo "- role: control-plane" >> ${CONTEXT}/kindconfig.yaml
+((counter++))
+done
+
+counter=1
+while [ $counter -le $WORKER_NUM	 ]
+do
+ echo "- role: worker" >> ${CONTEXT}/kindconfig.yaml
+ ((counter++))
+done
+
 	kind create cluster \
 		--kubeconfig ${CONTEXT}/kubeconfig \
 		--config ${CONTEXT}/kindconfig.yaml \
