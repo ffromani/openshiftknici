@@ -2,8 +2,8 @@
 
 ACTION=${1}
 
-DEVICE_PLUGIN_MANIFESTS="https://raw.githubusercontent.com/swatisehgal/sample-device-plugin/master/manifests"
-TOPOLOGYAPI_MANIFESTS="https://raw.githubusercontent.com/swatisehgal/node-feature-discovery/rte"
+DEVICE_PLUGIN_MANIFESTS="https://raw.githubusercontent.com/k8stopologyawareschedwg/sample-device-plugin/master/manifests"
+TOPOLOGYAPI_MANIFESTS="https://raw.githubusercontent.com/k8stopologyawareschedwg/noderesourcetopology-api/master/manifests"
 
 if [ -z "${KUBECONFIG}" ]; then
 	exit 1
@@ -17,12 +17,12 @@ k8sdo() {
 start() {
 	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 	k8sdo create -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
-	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/manifests/noderesourcetopologies.yaml.template
+	k8sdo create -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
 	# TODO wait for the daemonset to go running
 }
 
 stop() {
-	k8sdo delete -f ${TOPOLOGYAPI_MANIFESTS}/manifests/noderesourcetopologies.yaml.template
+	k8sdo delete -f ${TOPOLOGYAPI_MANIFESTS}/crd.yaml
 	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginB-ds.yaml
 	k8sdo delete -f ${DEVICE_PLUGIN_MANIFESTS}/devicepluginA-ds.yaml
 }

@@ -3,8 +3,8 @@
 set -u
 
 OPENSHIFTKNI_CI_KIND_IMAGE=${OPENSHIFTKNI_CI_KIND_IMAGE:-'kindest/node:v1.19.1@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600'}
-DEVICE_PLUGIN_MANIFESTS="https://raw.githubusercontent.com/swatisehgal/sample-device-plugin/master/manifests"
-TOPOLOGYAPI_MANIFESTS="https://raw.githubusercontent.com/swatisehgal/node-feature-discovery/rte"
+DEVICE_PLUGIN_MANIFESTS="https://raw.githubusercontent.com/k8stopologyawareschedwg/sample-device-plugin/master/manifests"
+TOPOLOGYAPI_MANIFESTS="https://raw.githubusercontent.com/k8stopologyawareschedwg/noderesourcetopology-api/master/manifests"
 
 CLUSTER_NAME=${1:-kni-test}
 
