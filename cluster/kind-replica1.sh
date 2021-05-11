@@ -30,6 +30,7 @@ kubeadmConfigPatches:
   reservedSystemCPUs: "1"
   featureGates:
     KubeletPodResourcesGetAllocatable: true
+  cgroupDriver: "cgroupfs"
 nodes:
 EOF
 
