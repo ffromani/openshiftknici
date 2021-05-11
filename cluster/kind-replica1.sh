@@ -26,6 +26,8 @@ kubeadmConfigPatches:
   cpuManagerReconcilePeriod: "5s"
   topologyManagerPolicy: "single-numa-node"
   reservedSystemCPUs: "1"
+  featureGates:
+    KubeletPodResourcesGetAllocatable: true
 nodes:
 - role: control-plane
 - role: worker
