@@ -18,5 +18,7 @@ export NFD_IMAGE="${IMAGE_REPO}:${IMAGE_TAG_NAME}"
 echo "built image: ${NFD_IMAGE} repo: ${IMAGE_REPO} tag: ${IMAGE_TAG_NAME}"
 
 kind load docker-image --name ${CLUSTER_NAME} ${NFD_IMAGE}
+# nfd >= 0.9.0
+kind load docker-image --name ${CLUSTER_NAME} ${NFD_IMAGE}-minimal || :
 
 KUBECONFIG=${KUBECONF} PULL_IF_NOT_PRESENT=true make e2e-test
