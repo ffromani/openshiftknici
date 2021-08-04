@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OPENSHIFTKNI_CI_KIND_IMAGE=${OPENSHIFTKNI_CI_KIND_IMAGE:-'kindest/node:v1.19.1@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600'}
+OPENSHIFTKNI_CI_KIND_IMAGE=${OPENSHIFTKNI_CI_KIND_IMAGE:-'kindest/node:v1.21.2@sha256:9d07ff05e4afefbba983fac311807b3c17a5f36e7061f6cb7e2ba756255b2be4'}
 
 ACTION=${1}
 CLUSTER_NAME=${2:-kni-test}
@@ -30,7 +30,6 @@ kubeadmConfigPatches:
   reservedSystemCPUs: "1"
   featureGates:
     KubeletPodResourcesGetAllocatable: true
-  cgroupDriver: "cgroupfs"
 nodes:
 EOF
 
