@@ -32,6 +32,6 @@ RUN git checkout $K8SBRANCH
 RUN ./openshift-hack/build-rpms.sh
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
-COPY --from=builder /go/src/k8s.io/kubernetes/_output/local/releases/rpms /go/src/k8s.io/kubernetes/_output/local/releases/rpms
+COPY --from=builder /go/src/k8s.io/kubernetes/_output/local/releases/rpms/*.rpm /srv/rpms/
 RUN microdnf install -y policycoreutils-python-utils
-ENTRYPOINT ["/usr/bin/python", "-m", "http.server", "-d", "/go/src/k8s.io/kubernetes/_output/local/releases/rpms"]
+ENTRYPOINT ["/usr/bin/python", "-m", "http.server", "-d", "/srv/rpms"]
