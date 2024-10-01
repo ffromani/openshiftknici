@@ -31,7 +31,13 @@ RUN git fetch origin pull/$K8SPR/head:$K8SBRANCH
 RUN git checkout $K8SBRANCH
 RUN ./openshift-hack/build-rpms.sh
 
-FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
-COPY --from=builder /go/src/k8s.io/kubernetes/_output/local/releases/rpms/*.rpm /srv/rpms/
-RUN microdnf install -y policycoreutils-python-utils
-ENTRYPOINT ["/usr/bin/python", "-m", "http.server", "-d", "/srv/rpms"]
+WORKDIR /
+RUN curl -L https://github.com/ffromani/httpserve/releases/download/v0.0.1/httpserve-v0.0.1-linux-amd64.gz -o httpserve-v0.0.1-linux-amd64.gz \
+    && gzip -d httpserve-v0.0.1-linux-amd64.gz \
+    && mv httpserve-v0.0.1-linux-amd64 httpserve \
+    && chmod 0755 httpserve
+
+FROM scratch
+COPY --from=builder /go/src/k8s.io/kubernetes/_output/local/releases/rpms/*.rpm /rpms/
+COPY --from=builder /httpserve /httpserve
+ENTRYPOINT ["/httpserve", "-d", "/rpms"]
